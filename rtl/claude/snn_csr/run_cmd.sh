@@ -1,0 +1,1 @@
+xrun -sv snn_csr_apb.sv snn_csr_apb_tb.sv  -access +rwc  -timescale 1ns/1ps -input waves.tcl

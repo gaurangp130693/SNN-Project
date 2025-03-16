@@ -1,0 +1,1 @@
+xrun -sv network_pkg.sv input_processor.sv input_processor_tb.sv -access +rwc  -timescale 1ns/1ps -input waves.tcl
