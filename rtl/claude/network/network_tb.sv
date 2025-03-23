@@ -4,7 +4,7 @@
 //  Description: Testbench for Digit Recognition Spiking Neural Network
 //==============================================================================
 
-module tb_digit_recognition_network;
+module spike_neural_network_tb;
   import network_pkg::*;
 
   // Signals
@@ -25,7 +25,7 @@ module tb_digit_recognition_network;
   logic [31:0] read_data;
 
   // Instantiate DUT
-  digit_recognition_network dut (
+  spike_neural_network dut (
     .clk(clk),
     .rst_n(rst_n),
     .pixel_input(pixel_input),

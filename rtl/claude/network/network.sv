@@ -7,7 +7,7 @@
 //  CSR blocks for each layer : hidden and output
 //==============================================================================
 
-module digit_recognition_network
+module spike_neural_network
   import network_pkg::*;
   import neuron_pkg::*;
 (
