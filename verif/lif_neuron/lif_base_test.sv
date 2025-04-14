@@ -26,14 +26,6 @@ class lif_base_test extends uvm_test;
     task run_phase(uvm_phase phase);
         phase.raise_objection(this);
 
-        // Reset Sequence
-        `uvm_info("TEST", "Starting reset...", UVM_MEDIUM)
-        env.agent.vif.rst <= 1;
-        env.agent.vif.enable <= 0;
-        repeat (5) @(posedge env.agent.vif.clk);
-        env.agent.vif.rst <= 0;
-        repeat (2) @(posedge env.agent.vif.clk);
-
         // Start test sequence
         `uvm_info("TEST", "Starting lif_sequence...", UVM_MEDIUM)
         seq = lif_sequence::type_id::create("seq");
