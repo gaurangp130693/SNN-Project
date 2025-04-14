@@ -1,0 +1,1 @@
+rm -rf INCA_libs/ cov_work/ imc.log irun.history irun.key irun.log mdv.log waves.shm/
