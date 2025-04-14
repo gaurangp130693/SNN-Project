@@ -25,17 +25,25 @@ class lif_driver extends uvm_driver #(lif_txn);
 
     virtual task run_phase(uvm_phase phase);
         lif_txn txn;
+        `uvm_info("lif_driver", "Starting run_phase...", UVM_LOW)
         forever begin
-            seq_item_port.get_next_item(txn);
-
-            // Apply transaction
-            vif.enable         <= txn.enable;
-            vif.input_spike    <= txn.input_spike;
-            vif.neuron_config  <= txn.neuron_config;
-
             @(posedge vif.clk);
+            if(vif.rst_n == 1) begin
+              seq_item_port.get_next_item(txn);
 
-            seq_item_port.item_done();
+              // Apply transaction
+              vif.leak_factor = txn.leak_factor;
+              vif.input_spike = txn.input_spike;
+              vif.threshold   = txn.threshold;
+
+
+              seq_item_port.item_done();
+            end
+            else begin
+              vif.leak_factor = 0;
+              vif.input_spike = 0;
+              vif.threshold   = 0;
+            end
         end
     endtask
 

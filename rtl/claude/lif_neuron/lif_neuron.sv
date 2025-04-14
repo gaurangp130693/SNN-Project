@@ -19,10 +19,6 @@ module lif_neuron
 
   membrane_t potential_reg;
   logic      spike_reg;
-  membrane_t leak_value;
-
-  // Compute leak value combinationally
-  assign leak_value = (potential_reg >> leak_factor);
 
   // Membrane potential update
   always_ff @(posedge clk or negedge rst_n) begin
@@ -37,8 +33,8 @@ module lif_neuron
       end else begin
         // Calculate next potential combining both spike and leak
         potential_reg <= potential_reg +
-                        (input_spike ? (threshold / 4) : 0) -
-                        leak_value;
+                        (input_spike ? (threshold >> 2) : 0) -
+                        leak_factor;
         spike_reg <= 1'b0;
       end
     end

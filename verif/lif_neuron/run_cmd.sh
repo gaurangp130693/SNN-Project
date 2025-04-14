@@ -1,1 +1,1 @@
-xrun -sv -f files.f -access +rwc  -timescale 1ns/1ps -input waves.tcl
+xrun -sv -f files.f -access +rwc  -timescale 1ns/1ps -input waves.tcl -covfile coverage.ccf

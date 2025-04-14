@@ -4,12 +4,11 @@
 //  Description: Interface to connect DUT and UVM Testbench
 //==============================================================================
 
-interface lif_if(input logic clk, input logic rst);
+interface lif_if(input logic clk, input logic rst_n);
 
-    logic        enable;
     logic        input_spike;
-    logic [15:0] neuron_config; // Assumed size, adjust as per RTL
+    logic [15:0] threshold; // Assumed size, adjust as per RTL
     logic        output_spike;
-    logic [15:0] membrane_potential;
+    logic [15:0] leak_factor;
 
 endinterface : lif_if

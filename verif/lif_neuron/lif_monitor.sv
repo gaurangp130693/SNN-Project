@@ -29,17 +29,18 @@ class lif_monitor extends uvm_component;
     virtual task run_phase(uvm_phase phase);
         lif_txn txn;
 
+        `uvm_info("lif_monitor", "Starting run_phase...", UVM_LOW)
         forever begin
             @(posedge vif.clk);
+            if(vif.rst_n == 1) begin
+              txn = lif_txn::type_id::create("txn");
+              txn.leak_factor        = vif.leak_factor;
+              txn.input_spike        = vif.input_spike;
+              txn.threshold          = vif.threshold;
+              txn.output_spike       = vif.output_spike;
 
-            txn = lif_txn::type_id::create("txn");
-            txn.enable             = vif.enable;
-            txn.input_spike        = vif.input_spike;
-            txn.neuron_config      = vif.neuron_config;
-            txn.output_spike       = vif.output_spike;
-            txn.membrane_potential = vif.membrane_potential;
-
-            mon_ap.write(txn);
+              mon_ap.write(txn);
+            end
         end
     endtask
 
