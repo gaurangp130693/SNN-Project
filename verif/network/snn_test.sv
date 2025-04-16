@@ -20,13 +20,16 @@ class snn_test extends uvm_test;
   endfunction
 
   task run_phase(uvm_phase phase);
-    snn_sequence seq;
+    snn_init_sequence seq_init;
+    snn_pixel_sequence seq_pixel;
 
     phase.raise_objection(this);
 
-    seq = snn_sequence::type_id::create("seq");
-    seq.start(env.agent.sequencer);
+    seq_init = snn_init_sequence::type_id::create("seq_init");
+    seq_init.start(env.agent.sequencer);
 
+    seq_pixel = snn_pixel_sequence::type_id::create("seq_pixel");
+    seq_pixel.start(env.agent.sequencer);
     phase.drop_objection(this);
   endtask
 

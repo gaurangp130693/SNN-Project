@@ -2,14 +2,10 @@
 // Author: Gaurang Pandey
 // Description: Interface for SNN DUT connections with APB
 
-interface snn_if #(
-    parameter INPUT_SIZE   = 64,
-    parameter OUTPUT_SIZE  = 16,
-    parameter PIXEL_WIDTH  = 8
-)(
-    input logic clk,
-    input logic rst_n
-);
+import network_pkg::*;
+interface snn_if ();
+    logic clk;
+    logic rst_n;
 
     // Input pixel array
     logic [PIXEL_WIDTH-1:0] pixel_input [INPUT_SIZE-1:0];
@@ -23,7 +19,7 @@ interface snn_if #(
     // APB interface signals
     logic        pclk;
     logic        preset_n;
-    logic [7:0]  paddr;
+    logic [15:0] paddr;
     logic        psel;
     logic        penable;
     logic        pwrite;

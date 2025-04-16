@@ -8,14 +8,11 @@
 
 `include "uvm_macros.svh"
 import uvm_pkg::*;
+import network_pkg::*;
+import neuron_pkg::*;
 import snn_tb_pkg::*;
 
 module snn_tb_top;
-
-    // Parameters (should match DUT)
-    parameter INPUT_SIZE   = 64;
-    parameter OUTPUT_SIZE  = 16;
-    parameter PIXEL_WIDTH  = 8;
 
     // Clock and reset
     logic clk;
@@ -32,18 +29,13 @@ module snn_tb_top;
         rst_n = 1;
     end
 
-    // Interface instantiation
-    snn_if #(
-        .INPUT_SIZE(INPUT_SIZE),
-        .OUTPUT_SIZE(OUTPUT_SIZE),
-        .PIXEL_WIDTH(PIXEL_WIDTH)
-    ) snn_vif (
-        .clk(clk),
-        .rst_n(rst_n)
-    );
+    snn_if snn_vif ();
+
+    assign snn_vif.clk = clk;
+    assign snn_vif.rst_n = rst_n;
 
     // DUT instantiation
-    network dut (
+    spike_neural_network dut (
         .clk(clk),
         .rst_n(rst_n),
         .pixel_input(snn_vif.pixel_input),
@@ -51,8 +43,6 @@ module snn_tb_top;
         .digit_spikes(snn_vif.digit_spikes),
 
         // APB connections
-        .pclk(clk),
-        .preset_n(rst_n),
         .paddr(snn_vif.paddr),
         .psel(snn_vif.psel),
         .penable(snn_vif.penable),
@@ -65,7 +55,7 @@ module snn_tb_top;
     // UVM test start
     initial begin
         uvm_config_db#(virtual snn_if)::set(null, "*", "vif", snn_vif);
-        run_test();
+        run_test("snn_test");
     end
 
 endmodule
