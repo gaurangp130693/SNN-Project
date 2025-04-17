@@ -8,7 +8,6 @@ ${SNN_PROJ_DIR}/rtl/claude/snn_csr/snn_csr_apb.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/clock_divider.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/reset_synchronizer.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/network.sv
-${SNN_PROJ_DIR}/rtl/claude/network/network_tb.sv
 
 +incdir+${SNN_PROJ_DIR}/verif/apb_agent
 ${SNN_PROJ_DIR}/verif/apb_agent/apb_if.sv

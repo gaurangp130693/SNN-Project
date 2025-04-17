@@ -23,6 +23,7 @@ package snn_tb_pkg;
   `include "snn_agent.sv"
 
   // SNN Environment files
+  `include "snn_vseqr.sv"
   `include "snn_env.sv"
 
   // SNN Sequence files
@@ -30,5 +31,6 @@ package snn_tb_pkg;
 
   // SNN Test files
   `include "snn_base_test.sv"
+  `include "snn_sanity_test.sv"
 
 endpackage
