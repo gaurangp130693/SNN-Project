@@ -10,8 +10,6 @@ package snn_tb_pkg;
   `include "uvm_macros.svh"
 
   `include "snn_transaction.sv"
-  `include "snn_sequence_item.sv"
-  `include "snn_sequence.sv"
   `include "snn_driver.sv"
   `include "snn_monitor.sv"
   `include "snn_sequencer.sv"

@@ -1,13 +1,13 @@
 //============================================================================== 
-//  File name: snn_driver.sv 
+//  File name: snn_pixel_driver.sv 
 //  Author : Gaurang Pandey 
-//  Description: Driver for SNN UVM testbench
+//  Description: Pixel Driver for SNN UVM testbench
 //==============================================================================
 
-class snn_driver extends uvm_driver #(snn_seq_item);
+class snn_pixel_driver extends uvm_driver #(snn_seq_item);
   
   // Registration with factory
-  `uvm_component_utils(snn_driver)
+  `uvm_component_utils(snn_pixel_driver)
   
   // Virtual interface
   virtual snn_if vif;
@@ -36,11 +36,13 @@ class snn_driver extends uvm_driver #(snn_seq_item);
       
       `uvm_info(get_type_name(), $sformatf("Received item:\n%s", req.convert2string()), UVM_HIGH)
       
-      case(req.operation)
-        snn_seq_item::PIXEL_INPUT: drive_pixel_input(req);
-        snn_seq_item::APB_WRITE:   drive_apb_write(req);
-        snn_seq_item::APB_READ:    drive_apb_read(req);
-      endcase
+      // Only handle pixel input operations
+      if (req.operation == snn_seq_item::PIXEL_INPUT) begin
+        drive_pixel_input(req);
+      end
+      else begin
+        `uvm_error(get_type_name(), $sformatf("Unsupported operation type %s", req.operation.name()))
+      end
       
       seq_item_port.item_done();
     end
@@ -51,11 +53,6 @@ class snn_driver extends uvm_driver #(snn_seq_item);
     `uvm_info(get_type_name(), "Resetting DUT", UVM_MEDIUM)
     
     vif.rst_n = 0;
-    vif.psel = 0;
-    vif.penable = 0;
-    vif.pwrite = 0;
-    vif.paddr = 0;
-    vif.pwdata = 0;
     
     // Initialize pixel inputs
     for(int i = 0; i < network_pkg::INPUT_SIZE; i++)
@@ -87,61 +84,6 @@ class snn_driver extends uvm_driver #(snn_seq_item);
              
     // Drive for one clock cycle
     @(posedge vif.clk);
-  endtask
-  
-  // APB Write Transaction
-  task drive_apb_write(snn_seq_item req);
-    `uvm_info(get_type_name(), $sformatf("APB Write to addr 0x%0h, data 0x%0h", 
-             req.trans.paddr, req.trans.pwdata), UVM_MEDIUM)
-    
-    // Setup phase
-    @(posedge vif.clk);
-    vif.psel = 1;
-    vif.penable = 0;
-    vif.pwrite = 1;
-    vif.paddr = req.trans.paddr;
-    vif.pwdata = req.trans.pwdata;
-    
-    // Access phase
-    @(posedge vif.clk);
-    vif.penable = 1;
-    
-    // Wait for ready
-    wait(vif.pready);
-    
-    // Complete transaction
-    @(posedge vif.clk);
-    vif.psel = 0;
-    vif.penable = 0;
-  endtask
-  
-  // APB Read Transaction
-  task drive_apb_read(snn_seq_item req);
-    `uvm_info(get_type_name(), $sformatf("APB Read from addr 0x%0h", req.trans.paddr), UVM_MEDIUM)
-    
-    // Setup phase
-    @(posedge vif.clk);
-    vif.psel = 1;
-    vif.penable = 0;
-    vif.pwrite = 0;
-    vif.paddr = req.trans.paddr;
-    
-    // Access phase
-    @(posedge vif.clk);
-    vif.penable = 1;
-    
-    // Wait for ready
-    wait(vif.pready);
-    
-    // Capture read data
-    req.trans.prdata = vif.prdata;
-    
-    `uvm_info(get_type_name(), $sformatf("Read data: 0x%0h", req.trans.prdata), UVM_MEDIUM)
-    
-    // Complete transaction
-    @(posedge vif.clk);
-    vif.psel = 0;
-    vif.penable = 0;
   endtask
   
 endclass
