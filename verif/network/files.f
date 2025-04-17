@@ -10,6 +10,11 @@ ${SNN_PROJ_DIR}/rtl/claude/network/reset_synchronizer.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/network.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/network_tb.sv
 
+${SNN_PROJ_DIR}/verif/network/apb_agent/apb_if.sv
+${SNN_PROJ_DIR}/verif/network/apb_agent/apb_pkg.sv
+
+${SNN_PROJ_DIR}/verif/network/snn_regmodel/snn_reg_pkg.sv
+
 ${SNN_PROJ_DIR}/verif/network/snn_if.sv
 ${SNN_PROJ_DIR}/verif/network/snn_tb_pkg.sv
 ${SNN_PROJ_DIR}/verif/network/snn_tb_top.sv

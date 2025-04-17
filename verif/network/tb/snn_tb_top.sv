@@ -55,7 +55,7 @@ module snn_tb_top;
     // UVM test start
     initial begin
         uvm_config_db#(virtual snn_if)::set(null, "*", "vif", snn_vif);
-        run_test("snn_test");
+        run_test("snn_base_test");
     end
 
 endmodule
