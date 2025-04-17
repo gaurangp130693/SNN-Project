@@ -4,9 +4,6 @@
 //  Description: APB Sequences for SNN UVM testbench
 //==============================================================================
 
-// Import APB package
-import apb_pkg::*;
-
 // Base APB sequence
 class apb_base_sequence extends uvm_sequence #(apb_transaction);
   

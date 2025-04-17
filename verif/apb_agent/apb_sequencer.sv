@@ -4,7 +4,7 @@
 //  Description: APB Sequencer for SNN UVM testbench
 //==============================================================================
 
-class apb_sequencer extends uvm_sequencer #(snn_seq_item);
+class apb_sequencer extends uvm_sequencer #(apb_transaction);
   
   // Registration with factory
   `uvm_component_utils(apb_sequencer)

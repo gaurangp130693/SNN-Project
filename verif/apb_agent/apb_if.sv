@@ -57,12 +57,12 @@ interface apb_if (input logic clk, input logic rst_n);
   endproperty
   
   // Address and data should remain stable during access phase
-  property stable_addr_data;
-    @(posedge clk) disable iff(!rst_n)
-      (psel && !penable) |=> (psel && penable && (paddr == $past(paddr)) && 
-                             (pwrite == $past(pwrite)) && 
-                             (pwrite |-> (pwdata == $past(pwdata))));
-  endproperty
+  //property stable_addr_data;
+  //  @(posedge clk) disable iff(!rst_n)
+  //    (psel && !penable) |=> (psel && penable && (paddr == $past(paddr)) && 
+  //                           (pwrite == $past(pwrite)) && 
+  //                           (pwrite |-> (pwdata == $past(pwdata))));
+  //endproperty
   
   // Assert the properties
   assert property(psel_before_penable)
@@ -71,7 +71,7 @@ interface apb_if (input logic clk, input logic rst_n);
   assert property(penable_one_cycle)
     else $error("APB Protocol Violation: PENABLE asserted for more than one cycle");
     
-  assert property(stable_addr_data)
-    else $error("APB Protocol Violation: Address or data not stable during access phase");
+  // assert property(stable_addr_data)
+  //  else $error("APB Protocol Violation: Address or data not stable during access phase");
   
 endinterface

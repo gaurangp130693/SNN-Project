@@ -6,7 +6,7 @@
 
 class snn_base_test extends uvm_test;
 
-  `uvm_component_utils(snn_test)
+  `uvm_component_utils(snn_base_test)
 
   snn_env env;
 

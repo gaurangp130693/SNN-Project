@@ -100,6 +100,7 @@ package snn_reg_pkg;
     virtual function void build(int input_size, int output_size, 
                                int weight_base_addr, int spike_thresh_base_addr,
                                int neuron_thresh_base_addr, int control_status_base_addr);
+      int num_weight_regs;
       this.input_size = input_size;
       this.output_size = output_size;
       this.weight_base_addr = weight_base_addr;
@@ -111,7 +112,7 @@ package snn_reg_pkg;
       default_map = create_map("default_map", 0, 4, UVM_LITTLE_ENDIAN);
       
       // Calculate number of weight/spike registers (4 values per register)
-      int num_weight_regs = ((input_size * output_size) + 3) / 4;
+      num_weight_regs = ((input_size * output_size) + 3) / 4;
       
       // Create weight registers
       weight_regs = new[num_weight_regs];

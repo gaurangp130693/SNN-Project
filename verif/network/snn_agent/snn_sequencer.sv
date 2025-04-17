@@ -4,7 +4,7 @@
 //  Description: Sequencer for SNN UVM testbench
 //==============================================================================
 
-class snn_sequencer extends uvm_sequencer #(snn_seq_item);
+class snn_sequencer extends uvm_sequencer #(snn_transaction);
 
   `uvm_component_utils(snn_sequencer)
 

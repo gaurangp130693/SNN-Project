@@ -10,11 +10,18 @@ ${SNN_PROJ_DIR}/rtl/claude/network/reset_synchronizer.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/network.sv
 ${SNN_PROJ_DIR}/rtl/claude/network/network_tb.sv
 
-${SNN_PROJ_DIR}/verif/network/apb_agent/apb_if.sv
-${SNN_PROJ_DIR}/verif/network/apb_agent/apb_pkg.sv
++incdir+${SNN_PROJ_DIR}/verif/apb_agent
+${SNN_PROJ_DIR}/verif/apb_agent/apb_if.sv
+${SNN_PROJ_DIR}/verif/apb_agent/apb_pkg.sv
 
-${SNN_PROJ_DIR}/verif/network/snn_regmodel/snn_reg_pkg.sv
++incdir+${SNN_PROJ_DIR}/verif/snn_reg_model
+${SNN_PROJ_DIR}/verif/snn_reg_model/snn_reg_pkg.sv
 
-${SNN_PROJ_DIR}/verif/network/snn_if.sv
-${SNN_PROJ_DIR}/verif/network/snn_tb_pkg.sv
-${SNN_PROJ_DIR}/verif/network/snn_tb_top.sv
++incdir+${SNN_PROJ_DIR}/verif/network/snn_agent
++incdir+${SNN_PROJ_DIR}/verif/network/vseq
++incdir+${SNN_PROJ_DIR}/verif/network/env
++incdir+${SNN_PROJ_DIR}/verif/network/test
++incdir+${SNN_PROJ_DIR}/verif/network/tb
+${SNN_PROJ_DIR}/verif/network/tb/snn_if.sv
+${SNN_PROJ_DIR}/verif/network/tb/snn_tb_pkg.sv
+${SNN_PROJ_DIR}/verif/network/tb/snn_tb_top.sv

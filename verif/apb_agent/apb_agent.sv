@@ -15,7 +15,7 @@ class apb_agent extends uvm_agent;
   apb_monitor   monitor;
   
   // Analysis port to forward transactions from monitor
-  uvm_analysis_port #(snn_transaction) analysis_port;
+  uvm_analysis_port #(apb_transaction) analysis_port;
   
   // Agent configuration
   bit is_active = 1;  // Default active agent
