@@ -22,6 +22,7 @@ fi
 xrun -sv -uvmhome $UVM_HOME \
      -f files.f \
      -access +rwc \
+     -licqueue \
      -timescale 1ns/1ps \
      -input waves.tcl \
      +UVM_TESTNAME=$TEST_NAME \

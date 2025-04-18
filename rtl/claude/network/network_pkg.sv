@@ -10,9 +10,9 @@ package network_pkg;
   parameter int CLK_PERIOD = 10; // 10ns clock period (100 MHz)
   parameter int CLOCK_DIVIDER_VAL = 8;
 
-  parameter int INPUT_SIZE = 16;    // 2x2 image = 4 inputs
-  parameter int HIDDEN_SIZE = 8;   // First hidden layer neurons
-  parameter int OUTPUT_SIZE = 4;   // 10 outputs (0-9)
+  parameter int INPUT_SIZE = 64;   // 8x8 image = 64 inputs
+  parameter int HIDDEN_SIZE = 32;   // First hidden layer neurons
+  parameter int OUTPUT_SIZE = 10;   // 10 outputs (0-9)
 
   // Input processing parameters
   parameter int PIXEL_WIDTH = 8;    // 8-bit pixel values

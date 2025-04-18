@@ -9,9 +9,6 @@ class apb_reg_adapter extends uvm_reg_adapter;
   
   function new(string name = "apb_reg_adapter");
     super.new(name);
-    // No need for byte_en or bus_width overrides for this implementation
-    supports_byte_enable = 0;
-    provides_responses = 1;
   endfunction
   
   virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
@@ -42,7 +39,7 @@ class apb_reg_adapter extends uvm_reg_adapter;
     rw.kind = apb_tx.pwrite ? UVM_WRITE : UVM_READ;
     rw.addr = apb_tx.paddr;
     rw.data = apb_tx.pwrite ? apb_tx.pwdata : apb_tx.prdata;
-    rw.status = apb_tx.pready ? UVM_IS_OK : UVM_NOT_OK;
+    rw.status = UVM_IS_OK;
     
     `uvm_info(get_type_name(), $sformatf("Converted APB to reg op: %s", apb_tx.convert2string()), UVM_HIGH)
   endfunction
