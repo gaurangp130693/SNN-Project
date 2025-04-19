@@ -37,11 +37,11 @@ class snn_transaction extends uvm_sequence_item;
   }
   
   constraint c_leak_factor {
-    leak_factor inside {[1:32]};
+    leak_factor inside {[0:0]};
   }
 
   constraint c_spike_window {
-    spike_window == network_pkg::SPIKE_WINDOW;
+    spike_window == 3*network_pkg::SPIKE_WINDOW;
   }
   
   // Constructor

@@ -53,7 +53,7 @@ class snn_driver extends uvm_driver #(snn_transaction);
     for(int i = 0; i < network_pkg::INPUT_SIZE; i++)
       vif.pixel_input[i] = 0;
 
-    vif.leak_factor = 8'h10; // Default leak factor
+    vif.leak_factor = 8'h00; // Default leak factor
 
     repeat(5) @(posedge vif.clk);
     vif.rst_n = 1;

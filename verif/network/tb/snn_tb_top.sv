@@ -31,8 +31,8 @@ module snn_tb_top;
     snn_if snn_vif ();
     apb_if apb_vif (clk, rst_n);
 
-    assign snn_vif.clk = clk;
-    assign snn_vif.rst_n = rst_n;
+    assign snn_vif.clk = dut.clk_cnt;
+    assign snn_vif.rst_n = dut.u_reset_sync.rst_n_sync;
 
     // DUT instantiation
     spike_neural_network dut (

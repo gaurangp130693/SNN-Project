@@ -4,7 +4,7 @@
 //  Description: Complete digit pattern sequence for SNN UVM testbench
 //==============================================================================
 
-class snn_digit_sequence extends snn_base_sequence;
+class snn_digit_sequence extends uvm_sequence;
   
   // Registration with factory
   `uvm_object_utils(snn_digit_sequence)

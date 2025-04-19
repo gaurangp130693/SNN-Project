@@ -4,7 +4,7 @@
 //  Description: Radial pattern sequence for SNN UVM testbench
 //==============================================================================
 
-class snn_radial_sequence extends snn_base_sequence;
+class snn_radial_sequence extends uvm_sequence;
 
   // Registration with factory
   `uvm_object_utils(snn_radial_sequence)

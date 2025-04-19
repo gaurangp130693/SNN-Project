@@ -4,7 +4,7 @@
 //  Description: Noise pattern sequence for SNN UVM testbench
 //==============================================================================
 
-class snn_noise_pattern_sequence extends snn_base_sequence;
+class snn_noise_pattern_sequence extends uvm_sequence;
   
   // Registration with factory
   `uvm_object_utils(snn_noise_pattern_sequence)
