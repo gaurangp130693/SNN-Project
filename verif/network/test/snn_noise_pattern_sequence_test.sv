@@ -5,6 +5,7 @@
 //==============================================================================
 
 class snn_noise_pattern_sequence_test extends snn_base_test;
+  `uvm_component_utils(snn_noise_pattern_sequence_test)
 
   // Constructor
   function new(string name = "snn_noise_pattern_sequence_test", uvm_component parent = null);

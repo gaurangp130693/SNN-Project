@@ -4,6 +4,7 @@
 //  Description: This sequence generates digits 0-9 patterns on the SNN.
 //==============================================================================
 class snn_digit_sequence_test extends snn_base_test;
+  `uvm_component_utils(snn_digit_sequence_test)
   
   // Constructor
   function new(string name = "snn_digit_sequence_test", uvm_component parent = null);
