@@ -14,14 +14,19 @@ class snn_init_sequence extends snn_base_sequence;
     super.new(name);
   endfunction
 
-  // Body task - run initialization followed by pixel stimuli
   virtual task body();
-    snn_reg_sequence reg_seq;
-    `uvm_info(get_type_name(), "Starting test sequence", UVM_MEDIUM)
-    wait(apb_vif.rst_n == 1);
-    reg_seq = snn_reg_sequence::type_id::create("reg_seq");
-    reg_seq.start(p_sequencer);
-    `uvm_info(get_type_name(), "Test sequence completed", UVM_MEDIUM)
+    uvm_status_e status;
+    uvm_reg_data_t data;
+
+    super.body();
+
+    // Write to control status register, bit-0 to enable the SNN
+    data = '1;
+    reg_model.layer0_block.control_status_reg.write(status, data);
+    reg_model.layer1_block.control_status_reg.write(status, data);
+
+    reg_model.layer0_block.control_status_reg.read(status, data);
+    reg_model.layer1_block.control_status_reg.read(status, data);   
   endtask
 
 endclass

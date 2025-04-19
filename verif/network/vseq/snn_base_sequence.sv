@@ -26,7 +26,8 @@ class snn_base_sequence extends uvm_sequence;
 
   // Body task
   virtual task body();
-    // Base sequence is empty
+    // Wait for reset de-assertion
+    wait(apb_vif.rst_n == 1);
   endtask
 
 endclass

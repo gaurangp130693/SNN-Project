@@ -1,12 +1,12 @@
 //==============================================================================
-//  File name: snn_reg_sequence.sv
+//  File name: snn_reg_rand_sequence.sv
 //  Description: Generic sequence to test all SNN registers via APB
 //==============================================================================
 
-class snn_reg_sequence extends snn_base_sequence;
-  `uvm_object_utils(snn_reg_sequence)
+class snn_reg_rand_sequence extends snn_base_sequence;
+  `uvm_object_utils(snn_reg_rand_sequence)
 
-  function new(string name = "snn_reg_sequence");
+  function new(string name = "snn_reg_rand_sequence");
     super.new(name);
   endfunction
 
@@ -15,6 +15,7 @@ class snn_reg_sequence extends snn_base_sequence;
     uvm_reg_data_t data;
     uvm_reg regs[$];
 
+    super.body();
     if (reg_model == null)
       `uvm_fatal(get_type_name(), "Register reg_model handle is null")
 

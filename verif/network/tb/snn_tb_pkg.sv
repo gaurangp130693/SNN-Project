@@ -32,5 +32,7 @@ package snn_tb_pkg;
   // SNN Test files
   `include "snn_base_test.sv"
   `include "snn_sanity_test.sv"
+  `include "snn_reg_bitbash_test.sv"
+  `include "snn_reg_rand_wr_rd_test.sv"
 
 endpackage

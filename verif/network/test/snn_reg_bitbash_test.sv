@@ -1,14 +1,12 @@
 //==============================================================================
-//  File name: snn_sanity_test.sv
+//  File name: snn_reg_bitbash_test.sv
 //  Author : Gaurang Pandey
 //  Description: Top-level UVM test for SNN
 //==============================================================================
 
-class snn_sanity_test extends snn_base_test;
+class snn_reg_bitbash_test extends snn_base_test;
 
-  `uvm_component_utils(snn_sanity_test)
-
-  snn_env env;
+  `uvm_component_utils(snn_reg_bitbash_test)
 
   function new(string name, uvm_component parent);
     super.new(name, parent);
@@ -16,14 +14,14 @@ class snn_sanity_test extends snn_base_test;
 
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    env = snn_env::type_id::create("env", this);
   endfunction
 
   task run_phase(uvm_phase phase);
-    snn_init_sequence init_seq;
+    snn_reg_bitbash_sequence bitbash_seq;
     phase.raise_objection(this);
-    init_seq = snn_init_sequence::type_id::create("init_seq");
-    init_seq.start(env.snn_vseqr_h);
+    bitbash_seq = snn_reg_bitbash_sequence::type_id::create("bitbash_seq");
+    bitbash_seq.model = env.reg_model;
+    bitbash_seq.start(env.snn_vseqr_h);
     phase.drop_objection(this);
   endtask
 

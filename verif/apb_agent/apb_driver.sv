@@ -33,16 +33,8 @@ class apb_driver extends uvm_driver #(apb_transaction);
 
     forever begin
       seq_item_port.get_next_item(req);
-
       `uvm_info(get_type_name(), $sformatf("Received item:\n%s", req.convert2string()), UVM_HIGH)
-
-      // Only handle APB operations
-      case(req.operation)
-        APB_WRITE: drive_apb_write(req);
-        APB_READ:  drive_apb_read(req);
-        default: `uvm_error(get_type_name(), $sformatf("Unsupported operation type %s", req.operation.name()))
-      endcase
-
+      drive_transfer(req);
       seq_item_port.item_done();
       `uvm_info(get_type_name(), $sformatf("item_done:\n"), UVM_HIGH)
     end
@@ -51,71 +43,41 @@ class apb_driver extends uvm_driver #(apb_transaction);
   // Reset APB signals
   task reset_apb();
     `uvm_info(get_type_name(), "Resetting APB signals", UVM_MEDIUM)
-
     vif.psel <= 0;
     vif.penable <= 0;
     vif.pwrite <= 0;
     vif.paddr <= 0;
     vif.pwdata <= 0;
-
     `uvm_info(get_type_name(), "APB reset complete", UVM_MEDIUM)
   endtask
 
-  // APB Write Transaction
-  task drive_apb_write(apb_transaction req);
-    `uvm_info(get_type_name(), $sformatf("STARTED :APB Write to addr 0x%0h, data 0x%0h",
-             req.paddr, req.pwdata), UVM_MEDIUM)
-
+  // Drive APB transfer
+  task drive_transfer(apb_transaction tr);
     // Setup phase
     @(posedge vif.clk);
     vif.psel <= 1;
     vif.penable <= 0;
-    vif.pwrite <= 1;
-    vif.paddr <= req.paddr;
-    vif.pwdata <= req.pwdata;
+    vif.pwrite <= tr.pwrite;
+    vif.paddr <= tr.paddr;
+    if (tr.pwrite) vif.pwdata <= tr.pwdata;
 
     // Access phase
     @(posedge vif.clk);
     vif.penable <= 1;
 
-    // Wait for ready
-    wait(vif.pready);
+    // Wait for pready
+    do begin
+        @(posedge vif.clk);
+    end while (!vif.pready);
 
-    // Complete transaction
+    // If read operation, capture data
+    if (!tr.pwrite) tr.prdata = vif.prdata;
+
+    // End transaction
     @(posedge vif.clk);
     vif.psel <= 0;
     vif.penable <= 0;
-    `uvm_info(get_type_name(), $sformatf("COMPLETED :APB Write to addr 0x%0h, data 0x%0h",
-             req.paddr, req.pwdata), UVM_MEDIUM)
-  endtask
-
-  // APB Read Transaction
-  task drive_apb_read(apb_transaction req);
-    `uvm_info(get_type_name(), $sformatf("APB Read from addr 0x%0h", req.paddr), UVM_MEDIUM)
-
-    // Setup phase
-    @(posedge vif.clk);
-    vif.psel <= 1;
-    vif.penable <= 0;
-    vif.pwrite <= 0;
-    vif.paddr <= req.paddr;
-
-    // Access phase
-    @(posedge vif.clk);
-    vif.penable <= 1;
-
-    // Wait for ready
-    wait(vif.pready);
-
-    // Capture read data
-    req.prdata <= vif.prdata;
-
-    `uvm_info(get_type_name(), $sformatf("Read data: 0x%0h", req.prdata), UVM_MEDIUM)
-
-    // Complete transaction
-    @(posedge vif.clk);
-    vif.psel <= 0;
-    vif.penable <= 0;
+    `uvm_info(get_type_name(), $sformatf("Driven Txn - %s", tr.convert2string()), UVM_MEDIUM)
   endtask
 
 endclass

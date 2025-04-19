@@ -1,12 +1,12 @@
 //==============================================================================
-//  File name: snn_sanity_test.sv
+//  File name: snn_reg_rand_wr_rd_test.sv
 //  Author : Gaurang Pandey
 //  Description: Top-level UVM test for SNN
 //==============================================================================
 
-class snn_sanity_test extends snn_base_test;
+class snn_reg_rand_wr_rd_test extends snn_base_test;
 
-  `uvm_component_utils(snn_sanity_test)
+  `uvm_component_utils(snn_reg_rand_wr_rd_test)
 
   snn_env env;
 
@@ -20,10 +20,12 @@ class snn_sanity_test extends snn_base_test;
   endfunction
 
   task run_phase(uvm_phase phase);
-    snn_init_sequence init_seq;
+    snn_reg_rand_sequence reg_wr_rd_seq;
     phase.raise_objection(this);
-    init_seq = snn_init_sequence::type_id::create("init_seq");
-    init_seq.start(env.snn_vseqr_h);
+    `uvm_info(get_type_name(), "Starting test sequence", UVM_MEDIUM)
+    reg_wr_rd_seq = snn_reg_rand_sequence::type_id::create("reg_wr_rd_seq");
+    reg_wr_rd_seq.start(p_sequencer);
+    `uvm_info(get_type_name(), "Test sequence completed", UVM_MEDIUM)
     phase.drop_objection(this);
   endtask
 
