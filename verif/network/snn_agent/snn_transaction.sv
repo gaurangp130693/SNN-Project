@@ -14,6 +14,9 @@ class snn_transaction extends uvm_sequence_item;
   
   // Leak factor
   rand logic [7:0] leak_factor;
+
+  // spike window
+  rand logic [7:0] spike_window;
   
   // Output spikes
   logic digit_spikes[];
@@ -35,6 +38,10 @@ class snn_transaction extends uvm_sequence_item;
   
   constraint c_leak_factor {
     leak_factor inside {[1:32]};
+  }
+
+  constraint c_spike_window {
+    spike_window == network_pkg::SPIKE_WINDOW;
   }
   
   // Constructor

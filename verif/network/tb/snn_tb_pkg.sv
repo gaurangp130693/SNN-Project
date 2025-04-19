@@ -35,5 +35,12 @@ package snn_tb_pkg;
   `include "snn_sanity_test.sv"
   `include "snn_reg_bitbash_test.sv"
   `include "snn_reg_rand_wr_rd_test.sv"
+  `include "snn_digit_sequence_test.sv"
+  `include "snn_checkered_sequence_test.sv"
+  `include "snn_random_sequence_test.sv"
+  `include "snn_noise_pattern_sequence_test.sv"
+  `include "snn_radial_sequence_test.sv"
+  `include "snn_gradient_sequence_test.sv"
+  `include "snn_stripe_sequence_test.sv"
 
 endpackage

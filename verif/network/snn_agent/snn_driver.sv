@@ -77,8 +77,11 @@ class snn_driver extends uvm_driver #(snn_transaction);
     `uvm_info(get_type_name(), $sformatf("Pixel values: %p, Leak factor: %0d",
              req.pixel_input, req.leak_factor), UVM_MEDIUM)
 
-    // Drive for one clock cycle
-    @(posedge vif.clk);
+    // Drive for "spike_window" # of clock cycle
+    repeat (req.spike_window) begin
+      @(posedge vif.clk);
+    end
+  
   endtask
 
 endclass
