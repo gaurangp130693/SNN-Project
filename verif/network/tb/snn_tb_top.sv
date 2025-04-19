@@ -29,13 +29,10 @@ module snn_tb_top;
     end
 
     snn_if snn_vif ();
-    apb_if apb_vif ();
+    apb_if apb_vif (clk, rst_n);
 
     assign snn_vif.clk = clk;
     assign snn_vif.rst_n = rst_n;
-
-    assign apb_vif.clk = clk;
-    assign apb_vif.rst_n = rst_n;
 
     // DUT instantiation
     spike_neural_network dut (

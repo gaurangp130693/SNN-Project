@@ -3,6 +3,7 @@
 //  Author : Gaurang Pandey
 //  Description: UVM Package for SNN testbench
 //==============================================================================
+`timescale 1ns/1ps
 
 package snn_tb_pkg;
 
