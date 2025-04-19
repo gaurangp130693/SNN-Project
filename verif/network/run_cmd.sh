@@ -13,17 +13,30 @@ fi
 
 # If coverage is enabled (1), add coverage option
 if [ "$ENABLE_COV" == "1" ]; then
-  COV_OPTIONS="-covfile coverage.ccf"
+  COV_OPTIONS="-covfile $SNN_PROJ_DIR/verif/network/coverage.ccf"
 else
   COV_OPTIONS=""
 fi
 
+# Create run directory if it doesn't exist
+if [ ! -d "run" ]; then
+  mkdir -p run
+fi
+
+# Create test directory inside run directory
+mkdir -p run/$TEST_NAME
+
+# Change to the test directory
+cd run/$TEST_NAME
+
+echo "Running simulation for test: $TEST_NAME in directory: $(pwd)"
+
 # Run the simulation
 xrun -sv -uvmhome $UVM_HOME \
-     -f files.f \
+     -f $SNN_PROJ_DIR/verif/network/files.f \
      -access +rwc \
      -licqueue \
      -timescale 1ns/1ps \
-     -input waves.tcl \
+     -input $SNN_PROJ_DIR/verif/network/waves.tcl \
      +UVM_TESTNAME=$TEST_NAME \
      $COV_OPTIONS
