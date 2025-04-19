@@ -7,9 +7,9 @@
 class snn_random_sequence_test extends snn_base_test;
 
   // Constructor
-  function new(string name = "snn_random_sequence_test");
-    super.new(name);
-  endfunction
+  function new(string name = "snn_random_sequence_test", uvm_component parent = null);
+    super.new(name, parent);
+  endfunction : new
 
   // Build phase
   function void build_phase(uvm_phase phase);
