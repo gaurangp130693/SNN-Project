@@ -20,7 +20,6 @@ class snn_reg_bitbash_test extends snn_base_test;
     snn_reg_bitbash_sequence bitbash_seq;
     phase.raise_objection(this);
     bitbash_seq = snn_reg_bitbash_sequence::type_id::create("bitbash_seq");
-    bitbash_seq.model = env.reg_model;
     bitbash_seq.start(env.snn_vseqr_h);
     phase.drop_objection(this);
   endtask
