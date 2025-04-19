@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_digit_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Complete digit pattern sequence for SNN UVM testbench
 //==============================================================================
 

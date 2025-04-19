@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_noise_pattern_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Noise pattern sequence for SNN UVM testbench
 //==============================================================================
 

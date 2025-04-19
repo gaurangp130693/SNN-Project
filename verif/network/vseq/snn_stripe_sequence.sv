@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_stripe_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Stripe pattern sequence for SNN UVM testbench
 //==============================================================================
 

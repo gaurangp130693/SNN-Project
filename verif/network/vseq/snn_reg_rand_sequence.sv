@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_reg_rand_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Generic sequence to test all SNN registers via APB
 //==============================================================================
 

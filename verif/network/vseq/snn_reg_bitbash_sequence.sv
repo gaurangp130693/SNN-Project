@@ -1,7 +1,7 @@
 //==============================================================================
 //  File name: snn_reg_bitbash_sequence.sv
-//
-//  Description:
+//  Author : Gaurang Pandey
+//  Description: Register bitbash sequence
 //==============================================================================
 class snn_reg_bitbash_sequence extends snn_base_sequence;
 

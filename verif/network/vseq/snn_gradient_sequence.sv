@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_gradient_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Gradient pattern sequence for SNN UVM testbench
 //==============================================================================
 

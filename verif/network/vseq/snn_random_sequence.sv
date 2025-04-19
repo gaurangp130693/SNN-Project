@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_random_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Random pattern sequence for SNN UVM testbench
 //==============================================================================
 

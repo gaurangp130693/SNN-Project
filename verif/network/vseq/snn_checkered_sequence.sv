@@ -1,5 +1,6 @@
 //==============================================================================
 //  File name: snn_checkered_sequence.sv
+//  Author : Gaurang Pandey
 //  Description: Checkered pattern sequence for SNN UVM testbench
 //==============================================================================
 
