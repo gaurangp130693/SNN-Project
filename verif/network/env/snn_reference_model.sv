@@ -17,7 +17,7 @@ class snn_reference_model extends uvm_component;
   protected int THRESHOLD;
   
   // Input processing
-  protected logic [$clog2(SPIKE_WINDOW)-1:0] input_counters[];
+  protected logic [3:0] input_counters[];
   
   // Model internal state - use full width as in RTL
   protected logic [15:0] hidden_potentials[]; // Membrane potentials for hidden layer
@@ -124,24 +124,24 @@ class snn_reference_model extends uvm_component;
   
   // Calculate input-to-spike conversion based on rate coding
   // Similar to input_processor module in RTL
-  protected function logic [INPUT_SIZE-1:0] pixel_to_spikes(logic [7:0] pixel_values[INPUT_SIZE-1:0]);
-    logic [INPUT_SIZE-1:0] spikes;
-    
+  protected function logic [network_pkg::INPUT_SIZE-1:0] pixel_to_spikes(logic [7:0] pixel_values[network_pkg::INPUT_SIZE]);
+    logic [network_pkg::INPUT_SIZE-1:0] spikes;
+    logic [3:0] threshold;  // Extra bit to avoid overflow
+
     for (int i = 0; i < INPUT_SIZE; i++) begin
       // Compute dynamic threshold (pixel_value * SPIKE_WINDOW / 256)
-      logic [$clog2(SPIKE_WINDOW):0] threshold;  // Extra bit to avoid overflow
       threshold = (pixel_values[i] * SPIKE_WINDOW) >> 8; // Equivalent to / 256
-      
+
       // Generate spike based on pixel intensity threshold
       spikes[i] = (input_counters[i] < threshold);
-      
+
       // Update counter for next time
       if (input_counters[i] >= SPIKE_WINDOW-1)
         input_counters[i] = 0;
       else
         input_counters[i] = input_counters[i] + 1;
     end
-    
+
     return spikes;
   endfunction
   
@@ -184,10 +184,10 @@ class snn_reference_model extends uvm_component;
   // Process pixel inputs to compute expected outputs
   function void process_transaction(snn_transaction tr, ref logic expected_spikes[]);
     // Local variables
-    logic [INPUT_SIZE-1:0] input_spikes;
-    logic [HIDDEN_SIZE-1:0] hidden_layer_inputs;
-    logic [HIDDEN_SIZE-1:0] hidden_spikes;
-    logic [OUTPUT_SIZE-1:0] output_layer_inputs;
+    logic [network_pkg::INPUT_SIZE-1:0] input_spikes;
+    logic [network_pkg::HIDDEN_SIZE-1:0] hidden_layer_inputs;
+    logic [network_pkg::HIDDEN_SIZE-1:0] hidden_spikes;
+    logic [network_pkg::OUTPUT_SIZE-1:0] output_layer_inputs;
     
     expected_spikes = new[OUTPUT_SIZE];
     

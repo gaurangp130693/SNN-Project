@@ -14,10 +14,10 @@ module neuron_layer
   input  logic clk,
   input  logic rst_n,
   input  logic input_spikes [INPUT_COUNT-1:0],
-  input  logic [7:0] leak_factor,
-  input  weight_t weight_reg[INPUT_COUNT-1:0][NEURON_COUNT-1:0],
-  input  weight_t spike_threshold[INPUT_COUNT-1:0][NEURON_COUNT-1:0],
-  input  logic [15:0] neuron_threshold [NEURON_COUNT-1:0],
+  input  leak_t leak_factor,
+  input  weight_t weight_reg[(INPUT_COUNT * NEURON_COUNT) - 1:0],
+  input  weight_t spike_threshold[(INPUT_COUNT * NEURON_COUNT) - 1:0],
+  input  weight_t neuron_threshold [NEURON_COUNT-1:0],
   output logic output_spikes [NEURON_COUNT-1:0]
 );
 
@@ -35,8 +35,8 @@ module neuron_layer
         .clk(clk),
         .rst_n(rst_n),
         .pre_spike(input_spikes[j]),
-        .weight(weight_reg[j][i]),
-        .threshold(spike_threshold[j][i]),
+        .weight(weight_reg[i * INPUT_COUNT + j]),
+        .threshold(spike_threshold[i * INPUT_COUNT + j]),
         .weighted_spike(weighted_spikes[j][i])
       );
 

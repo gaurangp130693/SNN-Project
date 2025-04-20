@@ -1,7 +1,7 @@
 //==============================================================================
 //  File name: network.sv
 //  Author : Gaurang Pandey
-//  Description: Digit Recognition Spiking Neural Network with 
+//  Description: Digit Recognition Spiking Neural Network with
 //  One-input layer, one-hidden layer and one-output layer
 //  Clock and Reset Generation Module
 //  CSR blocks for each layer : hidden and output
@@ -78,36 +78,11 @@ module spike_neural_network
     .pixel_value(pixel_input),
     .spike_out(input_spikes)
   );
-
-  weight_t weight_reg_l0[INPUT_SIZE-1:0][HIDDEN_SIZE-1:0];
-  weight_t spike_threshold_l0[INPUT_SIZE-1:0][HIDDEN_SIZE-1:0];
-  logic [15:0] neuron_threshold_l0 [HIDDEN_SIZE-1:0];
-
-  // Registers Outputs
-  logic [31:0] weight_reg_u0 [((INPUT_SIZE * HIDDEN_SIZE) / 4 ) - 1:0];
-  logic [31:0] spike_threshold_u0 [((INPUT_SIZE * HIDDEN_SIZE) / 4 ) - 1:0];
-  logic [31:0] neuron_threshold_u0 [HIDDEN_SIZE-1:0];
+ // Registers Outputs
+  weight_t weight_reg_u0 [(INPUT_SIZE * HIDDEN_SIZE) - 1:0];
+  weight_t spike_threshold_u0 [(INPUT_SIZE * HIDDEN_SIZE) - 1:0];
+  weight_t neuron_threshold_u0 [HIDDEN_SIZE-1:0];
   logic [31:0] cntrl_status_csr_u0;
-
-  always_comb begin
-    for (int i = 0; i < INPUT_SIZE; i++) begin
-      for (int j = 0; j < HIDDEN_SIZE; j++) begin
-        // Declare variables outside the always_comb block
-        logic [31:0] idx;
-        logic [1:0] offset;
-        // Compute index and offset
-        idx = (i * HIDDEN_SIZE + j) >> 2;  // Divide by 4
-        offset = (j % 4) * 8;              // Byte offset in 32-bit word
-        weight_reg_l0[i][j] = weight_reg_u0[idx][offset +: 8]; // Extract 8-bit chunk
-        spike_threshold_l0[i][j] = spike_threshold_u0[idx][offset +: 8]; // Extract 8-bit chunk
-      end
-    end
-  end
-  always_comb begin
-    for (int j = 0; j < HIDDEN_SIZE; j++) begin
-      neuron_threshold_l0[j] = neuron_threshold_u0[j];
-    end
-  end
 
   snn_csr_apb #(
     .INPUT_SIZE(INPUT_SIZE),
@@ -140,42 +115,18 @@ module spike_neural_network
     .clk(clk_cnt),
     .rst_n(rst_clk_cnt_n),
     .input_spikes(input_spikes),            // [INPUT_COUNT-1:0]
-    .weight_reg(weight_reg_l0),             // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
-    .spike_threshold(spike_threshold_l0),   // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
-    .neuron_threshold(neuron_threshold_l0), // [NEURON_COUNT-1:0]
+    .weight_reg(weight_reg_u0),             // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
+    .spike_threshold(spike_threshold_u0),   // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
+    .neuron_threshold(neuron_threshold_u0), // [NEURON_COUNT-1:0]
     .leak_factor(leak_factor),
     .output_spikes(hidden_spikes)           // [NEURON_COUNT-1:0]
   );
 
-  weight_t weight_reg_l1[HIDDEN_SIZE-1:0][OUTPUT_SIZE-1:0];
-  weight_t spike_threshold_l1[HIDDEN_SIZE-1:0][OUTPUT_SIZE-1:0];
-  logic [15:0] neuron_threshold_l1 [OUTPUT_SIZE-1:0];
-
   // Registers Outputs
-  logic [31:0] weight_reg_u1 [((HIDDEN_SIZE * OUTPUT_SIZE) / 4 ) - 1:0];
-  logic [31:0] spike_threshold_u1 [((HIDDEN_SIZE * OUTPUT_SIZE) / 4 ) - 1:0];
-  logic [31:0] neuron_threshold_u1 [OUTPUT_SIZE-1:0];
+  weight_t weight_reg_u1 [(HIDDEN_SIZE * OUTPUT_SIZE) - 1:0];
+  weight_t spike_threshold_u1 [(HIDDEN_SIZE * OUTPUT_SIZE) - 1:0];
+  weight_t neuron_threshold_u1 [OUTPUT_SIZE-1:0];
   logic [31:0] cntrl_status_csr_u1;
-
-  always_comb begin
-    for (int i = 0; i < HIDDEN_SIZE; i++) begin
-      for (int j = 0; j < OUTPUT_SIZE; j++) begin
-          // Declare variables outside the always_comb block
-          logic [31:0] idx;
-          logic [1:0] offset;
-          // Compute index and offset
-          idx = (i * OUTPUT_SIZE + j) >> 2;  // Divide by 4
-          offset = (j % 4) * 8;              // Byte offset in 32-bit word
-          weight_reg_l1[i][j] = weight_reg_u1[idx][offset +: 8]; // Extract 8-bit chunk
-          spike_threshold_l1[i][j] = spike_threshold_u1[idx][offset +: 8]; // Extract 8-bit chunk
-      end
-    end
-  end
-  always_comb begin
-    for (int j = 0; j < OUTPUT_SIZE; j++) begin
-      neuron_threshold_l1[j] = neuron_threshold_u1[j];
-    end
-  end
 
   snn_csr_apb #(
     .INPUT_SIZE(HIDDEN_SIZE),
@@ -208,13 +159,12 @@ module spike_neural_network
     .clk(clk_cnt),
     .rst_n(rst_clk_cnt_n),
     .input_spikes(hidden_spikes),           // [INPUT_COUNT-1:0]
-    .weight_reg(weight_reg_l1),             // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
-    .spike_threshold(spike_threshold_l1),   // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
-    .neuron_threshold(neuron_threshold_l1), // [NEURON_COUNT-1:0]
+    .weight_reg(weight_reg_u1),             // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
+    .spike_threshold(spike_threshold_u1),   // [INPUT_COUNT-1:0][NEURON_COUNT-1:0]
+    .neuron_threshold(neuron_threshold_u1), // [NEURON_COUNT-1:0]
     .leak_factor(leak_factor),
     .output_spikes(digit_spikes)            // [NEURON_COUNT-1:0]
   );
-
 
   // Both layer's CSR are programmed
   assign csr_load_done = cntrl_status_csr_u0[0] & cntrl_status_csr_u1[0];

@@ -13,7 +13,7 @@ module lif_neuron
   input  logic      rst_n,
   input  logic      input_spike,  // Input spike from synapse
   input  leak_t     leak_factor,  // Configurable leak factor
-  input  logic [15:0]  threshold, // Threshold for generating spikes
+  input  weight_t   threshold,    // Threshold for generating spikes
   output logic      output_spike  // Output spike when threshold is reached
 );
 

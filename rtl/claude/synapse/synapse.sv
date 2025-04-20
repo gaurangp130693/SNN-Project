@@ -18,7 +18,7 @@ module synapse
   output logic        weighted_spike   // Output weighted spike train
 );
 
-  logic [15:0] spike_counter; // Counter to accumulate weighted spikes
+  logic [31:0] spike_counter; // Counter to accumulate weighted spikes
   logic [3:0]  cycle_counter; // Counts cycles within the spiking window
 
   always_ff @(posedge clk or negedge rst_n) begin

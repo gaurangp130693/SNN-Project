@@ -58,17 +58,5 @@ module snn_tb_top;
         uvm_config_db#(virtual apb_if)::set(null, "*", "vif", apb_vif);
         run_test("snn_base_test");
     end
-
-    // Debug
-    assign snn_vif.weight_reg_u0 = dut.snn_csr_layer_u0.weight_reg;
-    assign snn_vif.spike_threshold_u0 = dut.snn_csr_layer_u0.spike_threshold;
-    assign snn_vif.neuron_threshold_u0 = dut.snn_csr_layer_u0.neuron_threshold;
-
-    assign snn_vif.weight_reg_u1 = dut.snn_csr_layer_u1.weight_reg;
-    assign snn_vif.spike_threshold_u1 = dut.snn_csr_layer_u1.spike_threshold;
-    assign snn_vif.neuron_threshold_u1 = dut.snn_csr_layer_u1.neuron_threshold;
-
-    assign snn_vif.cntrl_status_csr_u0 = dut.snn_csr_layer_u0.cntrl_status_csr;
-    assign snn_vif.cntrl_status_csr_u1 = dut.snn_csr_layer_u1.cntrl_status_csr;
     
 endmodule

@@ -6,6 +6,9 @@
 
 class snn_scoreboard extends uvm_scoreboard;
   `uvm_component_utils(snn_scoreboard)
+
+  `uvm_analysis_imp_decl(_actual)
+  `uvm_analysis_imp_decl(_apb)
   
   // Analysis ports
   uvm_analysis_imp_actual #(snn_transaction, snn_scoreboard) actual_export;
@@ -68,7 +71,7 @@ class snn_scoreboard extends uvm_scoreboard;
     // Determine which CSR register to update based on address
     if (tr.paddr >= network_pkg::LAYER_WEIGHT_BASE_ADDR_U0 && 
         tr.paddr < network_pkg::LAYER_WEIGHT_BASE_ADDR_U0 + 
-        ((network_pkg::INPUT_SIZE * network_pkg::HIDDEN_SIZE * 4) / 4)) begin
+        ((network_pkg::INPUT_SIZE * network_pkg::HIDDEN_SIZE * 4))) begin
       
       idx = (tr.paddr - network_pkg::LAYER_WEIGHT_BASE_ADDR_U0) >> 2;
       weight_reg_u0[idx] = tr.pwdata;
@@ -76,7 +79,7 @@ class snn_scoreboard extends uvm_scoreboard;
     end
     else if (tr.paddr >= network_pkg::LAYER_SPIKE_THRESH_BASE_ADDR_U0 && 
              tr.paddr < network_pkg::LAYER_SPIKE_THRESH_BASE_ADDR_U0 + 
-             ((network_pkg::INPUT_SIZE * network_pkg::HIDDEN_SIZE * 4) / 4)) begin
+             ((network_pkg::INPUT_SIZE * network_pkg::HIDDEN_SIZE * 4))) begin
       
       idx = (tr.paddr - network_pkg::LAYER_SPIKE_THRESH_BASE_ADDR_U0) >> 2;
       spike_threshold_u0[idx] = tr.pwdata;
@@ -97,7 +100,7 @@ class snn_scoreboard extends uvm_scoreboard;
     // Layer U1 registers
     else if (tr.paddr >= network_pkg::LAYER_WEIGHT_BASE_ADDR_U1 && 
              tr.paddr < network_pkg::LAYER_WEIGHT_BASE_ADDR_U1 + 
-             ((network_pkg::HIDDEN_SIZE * network_pkg::OUTPUT_SIZE * 4) / 4)) begin
+             ((network_pkg::HIDDEN_SIZE * network_pkg::OUTPUT_SIZE * 4))) begin
       
       idx = (tr.paddr - network_pkg::LAYER_WEIGHT_BASE_ADDR_U1) >> 2;
       weight_reg_u1[idx] = tr.pwdata;
@@ -105,7 +108,7 @@ class snn_scoreboard extends uvm_scoreboard;
     end
     else if (tr.paddr >= network_pkg::LAYER_SPIKE_THRESH_BASE_ADDR_U1 && 
              tr.paddr < network_pkg::LAYER_SPIKE_THRESH_BASE_ADDR_U1 + 
-             ((network_pkg::HIDDEN_SIZE * network_pkg::OUTPUT_SIZE * 4) / 4)) begin
+             ((network_pkg::HIDDEN_SIZE * network_pkg::OUTPUT_SIZE * 4))) begin
       
       idx = (tr.paddr - network_pkg::LAYER_SPIKE_THRESH_BASE_ADDR_U1) >> 2;
       spike_threshold_u1[idx] = tr.pwdata;
@@ -142,14 +145,14 @@ class snn_scoreboard extends uvm_scoreboard;
       end
     end
 
-    snn_vif.cntrl_status_csr_u0 = cntrl_status_csr_u0;
-    snn_vif.cntrl_status_csr_u1 = cntrl_status_csr_u1;
-    snn_vif.weight_reg_u0 = weight_reg_u0;
-    snn_vif.spike_threshold_u0 = spike_threshold_u0;
-    snn_vif.neuron_threshold_u0 = neuron_threshold_u0;
-    snn_vif.weight_reg_u1 = weight_reg_u1;
-    snn_vif.spike_threshold_u1 = spike_threshold_u1;
-    snn_vif.neuron_threshold_u1 = neuron_threshold_u1;
+    vif.cntrl_status_csr_u0 = cntrl_status_csr_u0;
+    vif.cntrl_status_csr_u1 = cntrl_status_csr_u1;
+    vif.weight_reg_u0 = weight_reg_u0;
+    vif.spike_threshold_u0 = spike_threshold_u0;
+    vif.neuron_threshold_u0 = neuron_threshold_u0;
+    vif.weight_reg_u1 = weight_reg_u1;
+    vif.spike_threshold_u1 = spike_threshold_u1;
+    vif.neuron_threshold_u1 = neuron_threshold_u1;
   endfunction
   
   // Function to handle SNN transaction from monitor
@@ -200,11 +203,11 @@ class snn_scoreboard extends uvm_scoreboard;
     super.check_phase(phase);
     
     `uvm_info(get_type_name(), 
-              $sformatf("\n----- SNN Scoreboard Statistics -----\n" 
-                        "Total Transactions: %0d\n" 
-                        "Matches:            %0d\n" 
-                        "Mismatches:         %0d\n" 
-                        "--------------------------------------", 
+              $sformatf({"\n----- SNN Scoreboard Statistics -----\n",
+                        "Total Transactions: %0d\n", 
+                        "Matches:            %0d\n",
+                        "Mismatches:         %0d\n", 
+                        "--------------------------------------"}, 
                         num_transactions, num_matches, num_mismatches), 
               UVM_LOW)
     
