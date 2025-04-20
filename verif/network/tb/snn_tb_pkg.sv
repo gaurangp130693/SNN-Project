@@ -25,6 +25,8 @@ package snn_tb_pkg;
 
   // SNN Environment files
   `include "snn_vseqr.sv"
+  `include "snn_reference_model.sv"
+  `include "snn_scoreboard.sv"
   `include "snn_env.sv"
 
   // SNN Sequence files

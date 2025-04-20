@@ -15,6 +15,7 @@ class snn_env extends uvm_env;
   snn_reg_block_c reg_model;
   apb_reg_adapter reg_adapter;
   apb_reg_predictor reg_predictor;
+  snn_scoreboard scoreboard;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);
@@ -26,6 +27,7 @@ class snn_env extends uvm_env;
     snn_agent_h = snn_agent::type_id::create("snn_agent_h", this);
     apb_agent_h = apb_agent::type_id::create("apb_agent_h", this);
     snn_vseqr_h = snn_vseqr::type_id::create("snn_vseqr_h", this);
+    scoreboard = snn_scoreboard::type_id::create("scoreboard", this);
 
     // Create register adapter and predictor
     reg_adapter = apb_reg_adapter::type_id::create("reg_adapter");
@@ -57,6 +59,9 @@ class snn_env extends uvm_env;
       reg_predictor.map = reg_model.default_map;
       reg_predictor.adapter = reg_adapter;
     end
+
+    apb_agent_h.monitor.item_collected_port.connect(scoreboard.apb_export);
+    snn_agent_h.monitor.item_collected_port.connect(scoreboard.actual_export);
   endfunction
 
 endclass
