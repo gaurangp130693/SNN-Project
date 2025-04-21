@@ -73,6 +73,7 @@ class snn_driver extends uvm_driver #(snn_transaction);
 
     // Set leak factor
     vif.leak_factor = req.leak_factor;
+    vif.pixel_valid = 1;
 
     `uvm_info(get_type_name(), $sformatf("Pixel values: %p, Leak factor: %0d",
              req.pixel_input, req.leak_factor), UVM_MEDIUM)
@@ -81,7 +82,8 @@ class snn_driver extends uvm_driver #(snn_transaction);
     repeat (req.spike_window) begin
       @(posedge vif.clk);
     end
-  
+    vif.pixel_valid = 0;
+
   endtask
 
 endclass

@@ -19,7 +19,7 @@ module synapse
 );
 
   logic [31:0] spike_counter; // Counter to accumulate weighted spikes
-  logic [3:0]  cycle_counter; // Counts cycles within the spiking window
+  logic [31:0] cycle_counter; // Counts cycles within the spiking window
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -27,7 +27,7 @@ module synapse
       cycle_counter <= 0;
       weighted_spike <= 0;
     end else begin
-      if (cycle_counter < SPIKING_WINDOW) begin
+      if (cycle_counter < (3*SPIKING_WINDOW)) begin
         cycle_counter <= cycle_counter + 1;
 
         if (pre_spike) begin
@@ -38,7 +38,7 @@ module synapse
         weighted_spike <= (spike_counter > threshold);
       end
       // Reset the spike counter & cycle counter at the end of the spiking window
-      if (cycle_counter == SPIKING_WINDOW - 1) begin
+      if (cycle_counter == (3*SPIKING_WINDOW - 1)) begin
         spike_counter <= 0;
         cycle_counter <= 0;
       end

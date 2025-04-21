@@ -5,6 +5,8 @@
 
 TEST_NAME=$1
 ENABLE_COV=$2
+NEURON_NUM=$3
+SCB_EN=$4
 
 # Default to some test if not provided
 if [ -z "$TEST_NAME" ]; then
@@ -39,4 +41,6 @@ xrun -sv -uvmhome $UVM_HOME \
      -timescale 1ns/1ps \
      -input $SNN_PROJ_DIR/verif/network/waves.tcl \
      +UVM_TESTNAME=$TEST_NAME \
+     +NEURON_NUM=$NEURON_NUM \
+     +SCB_EN=$SCB_EN \
      $COV_OPTIONS

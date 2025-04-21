@@ -21,6 +21,7 @@ class snn_random_sequence_test extends snn_base_test;
     snn_random_sequence seq_h;
     snn_reg_rand_sequence reg_wr_rd_seq;
     snn_init_sequence init_seq;
+    snn_reg_layer1_sequence reg_layer1_seq;
 
     phase.raise_objection(this);
 
@@ -30,13 +31,19 @@ class snn_random_sequence_test extends snn_base_test;
     reg_wr_rd_seq = snn_reg_rand_sequence::type_id::create("reg_wr_rd_seq");
     reg_wr_rd_seq.start(env.snn_vseqr_h);
 
+    if(neuron_num != 'hFF) begin
+      reg_layer1_seq = snn_reg_layer1_sequence::type_id::create("reg_layer1_seq");
+      reg_layer1_seq.neuron_num = neuron_num;
+      reg_layer1_seq.start(env.snn_vseqr_h);
+    end
+
     `uvm_info(get_type_name(), "Register Programming Seqence Ends", UVM_LOW)
 
     `uvm_info(get_type_name(), "Initialization Seqence Starts...", UVM_LOW)
     init_seq = snn_init_sequence::type_id::create("init_seq");
     init_seq.start(env.snn_vseqr_h);
     `uvm_info(get_type_name(), "Initialization Seqence Ends", UVM_LOW)
-    
+
     `uvm_info(get_type_name(), "SNN Pattern Seqence Starts...", UVM_LOW)
     seq_h = snn_random_sequence::type_id::create("seq_h");
     seq_h.start(env.snn_vseqr_h.snn_seqr);

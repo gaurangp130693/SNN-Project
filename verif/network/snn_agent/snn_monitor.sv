@@ -38,61 +38,26 @@ class snn_monitor extends uvm_monitor;
   // Monitor SNN activity (pixel inputs and output spikes)
   task monitor_snn_activity();
     snn_transaction trans;
-    logic [7:0] last_pixels[network_pkg::INPUT_SIZE];
-    logic last_spikes[network_pkg::OUTPUT_SIZE];
-    bit change_detected;
-
-    // Initialize arrays
-    for(int i = 0; i < network_pkg::INPUT_SIZE; i++)
-      last_pixels[i] = 0;
-
-    for(int i = 0; i < network_pkg::OUTPUT_SIZE; i++)
-      last_spikes[i] = 0;
+    bit last_spikes[network_pkg::OUTPUT_SIZE];
+    bit snn_start;
 
     forever begin
       @(posedge vif.clk);
 
-      // Check for changes in pixel inputs or output spikes
-      change_detected = 0;
-
-      // Check pixel inputs
-      for(int i = 0; i < network_pkg::INPUT_SIZE; i++) begin
-        if(vif.pixel_input[i] != last_pixels[i]) begin
-          change_detected = 1;
-          break;
-        end
-      end
-
-      // Check output spikes
-      if(!change_detected) begin
+      if(vif.pixel_valid && vif.rst_n) begin
+        snn_start = 1;
+        // Capture output spikes
         for(int i = 0; i < network_pkg::OUTPUT_SIZE; i++) begin
-          if(vif.digit_spikes[i] != last_spikes[i]) begin
-            change_detected = 1;
-            break;
+          if(vif.digit_spikes[i] == 1) begin
+            last_spikes[i] = last_spikes[i] | 1'b1;
           end
         end
       end
-
-      if(change_detected) begin
+      if(!vif.pixel_valid && vif.rst_n && snn_start) begin
         trans = snn_transaction::type_id::create("trans");
-
-        // Capture pixel inputs
-        for(int i = 0; i < network_pkg::INPUT_SIZE; i++) begin
-          trans.pixel_input[i] = vif.pixel_input[i];
-          last_pixels[i] = vif.pixel_input[i];
-        end
-
-        // Capture leak factor
-        trans.leak_factor = vif.leak_factor;
-
-        // Capture output spikes
         for(int i = 0; i < network_pkg::OUTPUT_SIZE; i++) begin
-          trans.digit_spikes[i] = vif.digit_spikes[i];
-          last_spikes[i] = vif.digit_spikes[i];
+          trans.digit_spikes[i] = last_spikes[i];
         end
-
-        `uvm_info(get_type_name(), $sformatf("SNN Activity: leak_factor=%0d", trans.leak_factor), UVM_MEDIUM)
-
         // Send to scoreboard
         item_collected_port.write(trans);
       end
