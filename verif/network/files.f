@@ -22,5 +22,6 @@ ${SNN_PROJ_DIR}/verif/snn_reg_model/snn_reg_pkg.sv
 +incdir+${SNN_PROJ_DIR}/verif/network/test
 +incdir+${SNN_PROJ_DIR}/verif/network/tb
 ${SNN_PROJ_DIR}/verif/network/tb/snn_if.sv
+${SNN_PROJ_DIR}/verif/network/tb/clk_rst_if.sv
 ${SNN_PROJ_DIR}/verif/network/tb/snn_tb_pkg.sv
 ${SNN_PROJ_DIR}/verif/network/tb/snn_tb_top.sv

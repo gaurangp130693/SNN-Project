@@ -43,5 +43,6 @@ package snn_tb_pkg;
   `include "snn_radial_sequence_test.sv"
   `include "snn_gradient_sequence_test.sv"
   `include "snn_stripe_sequence_test.sv"
+  `include "snn_reset_test.sv"
 
 endpackage

@@ -13,20 +13,15 @@ module snn_tb_top;
     import network_pkg::*;
     import neuron_pkg::*;
     import snn_tb_pkg::*;
+
     // Clock and reset
     logic clk;
     logic rst_n;
 
-    // Clock generation (100 MHz)
-    initial clk = 0;
-    always #5 clk = ~clk;
+    clk_rst_if clk_rst_vif ();
 
-    // Reset generation
-    initial begin
-        rst_n = 0;
-        #100;
-        rst_n = 1;
-    end
+    assign clk = clk_rst_vif.clk;
+    assign rst_n = clk_rst_vif.rst_n;
 
     snn_if snn_vif ();
     apb_if apb_vif (clk, rst_n);
@@ -56,7 +51,8 @@ module snn_tb_top;
     initial begin
         uvm_config_db#(virtual snn_if)::set(null, "*", "vif", snn_vif);
         uvm_config_db#(virtual apb_if)::set(null, "*", "vif", apb_vif);
+        uvm_config_db#(virtual clk_rst_if)::set(null, "*", "vif", clk_rst_vif);
         run_test("snn_base_test");
     end
-    
+
 endmodule

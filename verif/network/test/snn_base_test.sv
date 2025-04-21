@@ -16,8 +16,8 @@ class snn_base_test extends uvm_test;
     super.new(name, parent);
     if ($value$plusargs("NEURON_NUM=%0d", neuron_num)) begin
       `uvm_info(get_type_name(), $sformatf("Selected Output NEURON_NUM=%0d", neuron_num), UVM_LOW)
+      if(neuron_num == 0) neuron_num = 'hFF;
     end
-    else neuron_num = 'hFF;
     if ($value$plusargs("SCB_EN=%0d", scb_en)) begin
       `uvm_info(get_type_name(), $sformatf("Scoreboard Enabled"), UVM_LOW)
     end
