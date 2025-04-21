@@ -19,7 +19,7 @@ module synapse
 );
 
   logic [31:0] spike_counter; // Counter to accumulate weighted spikes
-  logic [31:0] cycle_counter; // Counts cycles within the spiking window
+  logic [5:0] cycle_counter; // Counts cycles within the spiking window
 
   always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
